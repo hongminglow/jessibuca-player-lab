@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Decoder Test</title>
+</head>
+<body>
+    <h1>Decoder Test</h1>
+    <div id="test-results"></div>
+    
+    <script>
+        // Test if decoder.js is accessible
+        fetch('./assets/decoder.js')
+            .then(response => {
+                if (response.ok) {
+                    document.getElementById('test-results').innerHTML = '<p style="color: green;">✅ decoder.js is accessible</p>';
+                } else {
+                    document.getElementById('test-results').innerHTML = '<p style="color: red;">❌ decoder.js is not accessible: ' + response.status + '</p>';
+                }
+            })
+            .catch(error => {
+                document.getElementById('test-results').innerHTML = '<p style="color: red;">❌ Error accessing decoder.js: ' + error + '</p>';
+            });
+    </script>
+</body>
+</html>
