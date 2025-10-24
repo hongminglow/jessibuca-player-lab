@@ -231,7 +231,7 @@ const JVideoPlayer = forwardRef<JVideoPlayerHandle, JVideoPlayerProps>(
       <div
         id={containerId}
         ref={wrapperRef}
-        className="z-9 aspect-video"
+        className="z-9 aspect-video self-center"
         style={{
           width: "100%",
           height: "auto",

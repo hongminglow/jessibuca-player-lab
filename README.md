@@ -1,75 +1,37 @@
-# React + TypeScript + Vite
+# Jessibuca Player Lab
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An experimental playground for evaluating Jessibuca WebAssembly playback inside a React + Vite app. The project demonstrates how to host multiple transport formats, switch streams safely, and integrate the player into a Swiper.js carousel to observe lifecycle and performance behaviour while slides change.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Smart player wrapper that selects Jessibuca for FLV/HLS-style transports and falls back to `react-player` for progressive formats.
+- `/` route (Stream Switcher) for manual FLV/Twitch/MP4 swaps without remounting the component tree.
+- `/carousel` route (Carousel POC) that mounts one player per slide and tears down inactive slides to prove we can interrupt buffering/decoding mid-flight.
+- Sample FLV sources (`weathering-with-you.flv`, `1080p.flv`) hosted by flvplayer.js.org for deterministic testing.
+- TypeScript-first setup with strict compiler options and ESLint in bundler mode.
 
-## React Compiler
+## Getting Started
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
-
-Note: This will impact Vite dev & build performances.
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+- Visit `http://localhost:5173/` for the Stream Switcher lab.
+- Visit `http://localhost:5173/carousel` for the Swiper carousel demonstration.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## How the Carousel Interrupts Playback
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- Swiper emits slide-change events that update `activeIndex` in `CarouselLab.tsx`.
+- Each slide only renders `SmartVideoPlayer` when `isActive` is true. When a slide becomes inactive React unmounts the component entirely.
+- The Jessibuca wrapper (`src/component/player/index.tsx`) listens for unmount via `useEffect` cleanup and calls `player.destroy()` (with guards) so decoding stops immediately.
+- Because we destroy the player rather than pausing, pending network requests and WASM work are cancelled, giving a clean swap even if the previous stream was still loading.
+
+## Notes
+
+- This is a lab project—behaviour and APIs may change while we evaluate performance trade-offs.
+- Large bundle sizes are expected when including Jessibuca’s optional decoders; refer to `vite.config.ts` for code-splitting ideas if shipping to production.
+
+## License
+
+MIT

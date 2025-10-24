@@ -93,6 +93,7 @@
 
 .smart-video-player.jessibuca-player {
   position: relative;
+  top: 80px;
 }
 
 .stream-info {

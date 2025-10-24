@@ -18,12 +18,12 @@ interface CarouselSlide {
 
 const SLIDES: CarouselSlide[] = [
   {
-    id: "mux-hls",
-    title: "Mux HLS Showcase",
+    id: "city-flv",
+    title: "City Traffic FLV",
     description:
-      "Standard HLS playlist served over HTTPS. Demonstrates adaptive bitrate streaming and native support in browsers.",
-    streamUrl: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
-    tags: ["HLS", "Adaptive", "HTTPS"],
+      "Alternate FLV asset hosted on flvplayer.js.org. Useful for validating Jessibuca playback with a different source.",
+    streamUrl: "https://flvplayer.js.org/assets/video/1080p.flv",
+    tags: ["FLV", "Jessibuca", "Alternate"],
   },
   {
     id: "flv-demo",
