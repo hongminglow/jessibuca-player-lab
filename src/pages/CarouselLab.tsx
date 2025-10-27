@@ -16,13 +16,19 @@ interface CarouselSlide {
   tags: string[];
 }
 
+// Flv   - https://jumpshare.com/s/DmZ1jiyNEyEKc9xeksuj%22,%20type:%20%22video/x-flv
+//       - https://live.nodemedia.cn:8443/live/sony_4k_264.flv
+//       - https://live.nodemedia.cn:8443/live/b480_264.flv
+// Twitch stream - https://www.twitch.tv/cdawg
+// Twitch video - https://www.twitch.tv/tarik/clip/PlausiblePeppyGrassJKanStyle-z0KYNyp3DuCGX--Z
+
 const SLIDES: CarouselSlide[] = [
   {
     id: "city-flv",
     title: "City Traffic FLV",
     description:
       "Alternate FLV asset hosted on flvplayer.js.org. Useful for validating Jessibuca playback with a different source.",
-    streamUrl: "https://flvplayer.js.org/assets/video/1080p.flv",
+    streamUrl: " https://live.nodemedia.cn:8443/live/sony_4k_264.flv",
     tags: ["FLV", "Jessibuca", "Alternate"],
   },
   {
